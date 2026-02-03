@@ -3,37 +3,361 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Пример простого сайта</title>
+    <title>Языки программирования</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        * {
             margin: 0;
-            padding: 20px;
-            background-color: #f0f0f0;
+            padding: 0;
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
-            background-color: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-        h1 {
-            color: #333;
+
+        header {
             text-align: center;
+            margin-bottom: 40px;
+            color: white;
         }
-        p {
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .languages-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+        }
+
+        .language-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .language-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .card-year {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .card-creator {
+            color: #888;
+            font-size: 0.9rem;
+            font-style: italic;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 2rem;
+            cursor: pointer;
+            color: #aaa;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #333;
+        }
+
+        .modal-title {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        .modal-info {
             line-height: 1.6;
             color: #666;
+        }
+
+        .modal-info p {
+            margin-bottom: 15px;
+        }
+
+        .modal-info strong {
+            color: #333;
+        }
+
+        @media (max-width: 768px) {
+            .languages-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Добро пожаловать на мой сайт</h1>
-        <p>Это простой пример веб-страницы, созданной с помощью HTML и CSS.</p>
-        <p>Здесь вы можете размещать любой текст или контент.</p>
+        <header>
+            <h1>Языки программирования</h1>
+            <p class="subtitle">Нажмите на карточку, чтобы узнать больше</p>
+        </header>
+
+        <div class="languages-grid">
+            <!-- Язык 1 -->
+            <div class="language-card" onclick="showModal('python')">
+                <div class="card-image">🐍</div>
+                <div class="card-content">
+                    <h3 class="card-title">Python</h3>
+                    <div class="card-year">Создан в 1991 году</div>
+                    <div class="card-creator">Гвидо ван Россум</div>
+                </div>
+            </div>
+
+            <!-- Язык 2 -->
+            <div class="language-card" onclick="showModal('javascript')">
+                <div class="card-image">🌐</div>
+                <div class="card-content">
+                    <h3 class="card-title">JavaScript</h3>
+                    <div class="card-year">Создан в 1995 году</div>
+                    <div class="card-creator">Брендан Эйх</div>
+                </div>
+            </div>
+
+            <!-- Язык 3 -->
+            <div class="language-card" onclick="showModal('java')">
+                <div class="card-image">☕</div>
+                <div class="card-content">
+                    <h3 class="card-title">Java</h3>
+                    <div class="card-year">Создан в 1995 году</div>
+                    <div class="card-creator">Джеймс Гослинг (Sun Microsystems)</div>
+                </div>
+            </div>
+
+            <!-- Язык 4 -->
+            <div class="language-card" onclick="showModal('cpp')">
+                <div class="card-image">⚙️</div>
+                <div class="card-content">
+                    <h3 class="card-title">C++</h3>
+                    <div class="card-year">Создан в 1985 году</div>
+                    <div class="card-creator">Бьёрн Страуструп</div>
+                </div>
+            </div>
+
+            <!-- Язык 5 -->
+            <div class="language-card" onclick="showModal('csharp')">
+                <div class="card-image">🔷</div>
+                <div class="card-content">
+                    <h3 class="card-title">C#</h3>
+                    <div class="card-year">Создан в 2000 году</div>
+                    <div class="card-creator">Андерс Хейлсберг (Microsoft)</div>
+                </div>
+            </div>
+
+            <!-- Язык 6 -->
+            <div class="language-card" onclick="showModal('go')">
+                <div class="card-image">🚀</div>
+                <div class="card-content">
+                    <h3 class="card-title">Go</h3>
+                    <div class="card-year">Создан в 2009 году</div>
+                    <div class="card-creator">Google (Роб Пайк, Роберт Гризмер, Кен Томпсон)</div>
+                </div>
+            </div>
+        </div>
     </div>
+
+    <!-- Модальные окна -->
+    <div id="python-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('python')">&times;</span>
+            <h2 class="modal-title">Python</h2>
+            <div class="modal-info">
+                <p><strong>Год создания:</strong> 1991</p>
+                <p><strong>Создатель:</strong> Гвидо ван Россум</p>
+                <p><strong>Описание:</strong> Высокоуровневый язык программирования общего назначения с динамической типизацией. Известен своей читаемостью и простотой обучения.</p>
+                <p><strong>Области применения:</strong> Веб-разработка, научные вычисления, искусственный интеллект, автоматизация, анализ данных.</p>
+                <p><strong>Интересный факт:</strong> Назван в честь телешоу "Монти Пайтон".</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="javascript-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('javascript')">&times;</span>
+            <h2 class="modal-title">JavaScript</h2>
+            <div class="modal-info">
+                <p><strong>Год создания:</strong> 1995</p>
+                <p><strong>Создатель:</strong> Брендан Эйх (Netscape)</p>
+                <p><strong>Описание:</strong> Динамический язык программирования, используемый в основном для создания интерактивных веб-страниц.</p>
+                <p><strong>Области применения:</strong> Фронтенд, бэкенд (Node.js), мобильная разработка, игры.</p>
+                <p><strong>Интересный факт:</strong> Был создан за 10 дней в мае 1995 года.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="java-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('java')">&times;</span>
+            <h2 class="modal-title">Java</h2>
+            <div class="modal-info">
+                <p><strong>Год создания:</strong> 1995</p>
+                <p><strong>Создатель:</strong> Джеймс Гослинг (Sun Microsystems)</p>
+                <p><strong>Описание:</strong> Объектно-ориентированный язык программирования, разработанный для создания платформонезависимых приложений.</p>
+                <p><strong>Области применения:</strong> Корпоративные приложения, Android-приложения, веб-сервисы.</p>
+                <p><strong>Интересный факт:</strong> Название придумал Джеймс Гослинг, вдохновившись любимым напитком.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="cpp-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('cpp')">&times;</span>
+            <h2 class="modal-title">C++</h2>
+            <div class="modal-info">
+                <p><strong>Год создания:</strong> 1985</p>
+                <p><strong>Создатель:</strong> Бьёрн Страуструп</p>
+                <p><strong>Описание:</strong> Системный язык программирования, расширяющий возможности C объектно-ориентированным программированием.</p>
+                <p><strong>Области применения:</strong> Системное программирование, игры, высоконагруженные приложения.</p>
+                <p><strong>Интересный факт:</strong> Название происходит от увеличения оператора ++ в C.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="csharp-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('csharp')">&times;</span>
+            <h2 class="modal-title">C#</h2>
+            <div class="modal-info">
+                <p><strong>Год создания:</strong> 2000</p>
+                <p><strong>Создатель:</strong> АНдерс Хейлсберг (Microsoft)</p>
+                <p><strong>Описание:</strong> Современный объектно-ориентированный язык программирования, разработанный для платформы .NET.</p>
+                <p><strong>Области применения:</strong> Веб-приложения, игры (Unity), настольные приложения, облачные сервисы.</p>
+                <p><strong>Интересный факт:</strong> Произносится как "си шарп", символ ♯ означает музыкальный аккорд.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="go-modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('go')">&times;</span>
+            <h2 class="modal-title">Go</h2>
+            <div class="modal-info">
+                <p><strong>Год создания:</strong> 2009</p>
+                <p><strong>Создатель:</strong> Google (Роб Пайк, Роберт Гризмер, Кен Томпсон)</p>
+                <p><strong>Описание:</strong> Компилируемый язык программирования, разработанный для современных многопроцессорных систем.</p>
+                <p><strong>Области применения:</strong> Веб-серверы, микросервисы, облачные вычисления.</p>
+                <p><strong>Интересный факт:</strong> Также известен как Golang, чтобы отличаться от других языков с именем Go.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showModal(language) {
+            document.getElementById(`${language}-modal`).style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(language) {
+            document.getElementById(`${language}-modal`).style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Закрытие модального окна при клике вне его области
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+
+        // Закрытие модального окна по клавише Esc
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const visibleModals = document.querySelectorAll('.modal[style*="block"]');
+                visibleModals.forEach(modal => {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                });
+            }
+        });
+    </script>
 </body>
 </html>
