@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Языки программирования</title>
+    <title>Поиск музыки</title>
     <style>
         * {
             margin: 0;
@@ -19,154 +19,166 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
         header {
             text-align: center;
-            margin-bottom: 40px;
-            color: white;
+            margin-bottom: 30px;
         }
 
         h1 {
+            color: #333;
             font-size: 2.5rem;
             margin-bottom: 10px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
+            color: #666;
+            font-size: 1.1rem;
         }
 
-        .languages-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            padding: 20px 0;
+        .search-container {
+            margin-bottom: 30px;
         }
 
-        .language-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-
-        .language-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-        }
-
-        .card-image {
+        .search-input {
             width: 100%;
-            height: 180px;
-            object-fit: cover;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            outline: none;
+            transition: border-color 0.3s ease;
         }
 
-        .card-content {
+        .search-input:focus {
+            border-color: #667eea;
+        }
+
+        .search-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s ease;
+        }
+
+        .search-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .results-container {
+            display: none;
+        }
+
+        .results-header {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .song-item {
+            background: #f8f9fa;
+            border-radius: 10px;
             padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
         }
 
-        .card-title {
-            font-size: 1.4rem;
+        .song-title {
+            font-size: 1.2rem;
             font-weight: 600;
             color: #333;
-            margin-bottom: 10px;
+            margin-bottom: 5px;
         }
 
-        .card-year {
+        .song-artist {
             color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-
-        .card-creator {
-            color: #888;
-            font-size: 0.9rem;
+            margin-bottom: 15px;
             font-style: italic;
         }
 
-        .modal {
+        .sources-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .source-link {
+            display: inline-block;
+            padding: 8px 15px;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: background 0.3s ease;
+        }
+
+        .source-link:hover {
+            background: #5a6fd8;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
             display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.8);
-            backdrop-filter: blur(5px);
         }
 
-        .modal-content {
-            background: white;
-            margin: 5% auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 600px;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-            animation: slideIn 0.3s ease;
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
         }
 
-        @keyframes slideIn {
-            from { transform: translateY(-50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .close {
-            position: absolute;
-            right: 20px;
-            top: 15px;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #aaa;
-            transition: color 0.3s ease;
-        }
-
-        .close:hover {
-            color: #333;
-        }
-
-        .modal-title {
-            font-size: 2rem;
-            color: #333;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #eee;
-            padding-bottom: 10px;
-        }
-
-        .modal-info {
-            line-height: 1.6;
+        .no-results {
+            text-align: center;
+            padding: 40px;
             color: #666;
+            display: none;
         }
 
-        .modal-info p {
-            margin-bottom: 15px;
-        }
-
-        .modal-info strong {
-            color: #333;
+        .placeholder {
+            text-align: center;
+            color: #ccc;
+            padding: 40px;
+            font-size: 1.2rem;
         }
 
         @media (max-width: 768px) {
-            .languages-grid {
-                grid-template-columns: 1fr;
+            .container {
+                margin: 10px;
+                padding: 20px;
             }
             
             h1 {
                 font-size: 2rem;
+            }
+            
+            .sources-list {
+                flex-direction: column;
             }
         }
     </style>
@@ -174,190 +186,150 @@
 <body>
     <div class="container">
         <header>
-            <h1>Языки программирования</h1>
-            <p class="subtitle">Нажмите на карточку, чтобы узнать больше</p>
+            <h1>🎵 Поиск музыки</h1>
+            <p class="subtitle">Найдите свои любимые треки по названию или исполнителю</p>
         </header>
 
-        <div class="languages-grid">
-            <!-- Язык 1 -->
-            <div class="language-card" onclick="showModal('python')">
-                <div class="card-image">🐍</div>
-                <div class="card-content">
-                    <h3 class="card-title">Python</h3>
-                    <div class="card-year">Создан в 1991 году</div>
-                    <div class="card-creator">Гвидо ван Россум</div>
-                </div>
-            </div>
-
-            <!-- Язык 2 -->
-            <div class="language-card" onclick="showModal('javascript')">
-                <div class="card-image">🌐</div>
-                <div class="card-content">
-                    <h3 class="card-title">JavaScript</h3>
-                    <div class="card-year">Создан в 1995 году</div>
-                    <div class="card-creator">Брендан Эйх</div>
-                </div>
-            </div>
-
-            <!-- Язык 3 -->
-            <div class="language-card" onclick="showModal('java')">
-                <div class="card-image">☕</div>
-                <div class="card-content">
-                    <h3 class="card-title">Java</h3>
-                    <div class="card-year">Создан в 1995 году</div>
-                    <div class="card-creator">Джеймс Гослинг (Sun Microsystems)</div>
-                </div>
-            </div>
-
-            <!-- Язык 4 -->
-            <div class="language-card" onclick="showModal('cpp')">
-                <div class="card-image">⚙️</div>
-                <div class="card-content">
-                    <h3 class="card-title">C++</h3>
-                    <div class="card-year">Создан в 1985 году</div>
-                    <div class="card-creator">Бьёрн Страуструп</div>
-                </div>
-            </div>
-
-            <!-- Язык 5 -->
-            <div class="language-card" onclick="showModal('csharp')">
-                <div class="card-image">🔷</div>
-                <div class="card-content">
-                    <h3 class="card-title">C#</h3>
-                    <div class="card-year">Создан в 2000 году</div>
-                    <div class="card-creator">Андерс Хейлсберг (Microsoft)</div>
-                </div>
-            </div>
-
-            <!-- Язык 6 -->
-            <div class="language-card" onclick="showModal('go')">
-                <div class="card-image">🚀</div>
-                <div class="card-content">
-                    <h3 class="card-title">Go</h3>
-                    <div class="card-year">Создан в 2009 году</div>
-                    <div class="card-creator">Google (Роб Пайк, Роберт Гризмер, Кен Томпсон)</div>
-                </div>
-            </div>
+        <div class="search-container">
+            <input type="text" class="search-input" placeholder="Введите название песни или имя исполнителя..." id="searchInput">
+            <button class="search-button" onclick="searchMusic()">Найти музыку</button>
         </div>
-    </div>
 
-    <!-- Модальные окна -->
-    <div id="python-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('python')">&times;</span>
-            <h2 class="modal-title">Python</h2>
-            <div class="modal-info">
-                <p><strong>Год создания:</strong> 1991</p>
-                <p><strong>Создатель:</strong> Гвидо ван Россум</p>
-                <p><strong>Описание:</strong> Высокоуровневый язык программирования общего назначения с динамической типизацией. Известен своей читаемостью и простотой обучения.</p>
-                <p><strong>Области применения:</strong> Веб-разработка, научные вычисления, искусственный интеллект, автоматизация, анализ данных.</p>
-                <p><strong>Интересный факт:</strong> Назван в честь телешоу "Монти Пайтон".</p>
-            </div>
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Поиск музыки...</p>
         </div>
-    </div>
 
-    <div id="javascript-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('javascript')">&times;</span>
-            <h2 class="modal-title">JavaScript</h2>
-            <div class="modal-info">
-                <p><strong>Год создания:</strong> 1995</p>
-                <p><strong>Создатель:</strong> Брендан Эйх (Netscape)</p>
-                <p><strong>Описание:</strong> Динамический язык программирования, используемый в основном для создания интерактивных веб-страниц.</p>
-                <p><strong>Области применения:</strong> Фронтенд, бэкенд (Node.js), мобильная разработка, игры.</p>
-                <p><strong>Интересный факт:</strong> Был создан за 10 дней в мае 1995 года.</p>
-            </div>
+        <div class="no-results" id="noResults">
+            <p>❌ Не удалось найти музыку по вашему запросу</p>
         </div>
-    </div>
 
-    <div id="java-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('java')">&times;</span>
-            <h2 class="modal-title">Java</h2>
-            <div class="modal-info">
-                <p><strong>Год создания:</strong> 1995</p>
-                <p><strong>Создатель:</strong> Джеймс Гослинг (Sun Microsystems)</p>
-                <p><strong>Описание:</strong> Объектно-ориентированный язык программирования, разработанный для создания платформонезависимых приложений.</p>
-                <p><strong>Области применения:</strong> Корпоративные приложения, Android-приложения, веб-сервисы.</p>
-                <p><strong>Интересный факт:</strong> Название придумал Джеймс Гослинг, вдохновившись любимым напитком.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="cpp-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('cpp')">&times;</span>
-            <h2 class="modal-title">C++</h2>
-            <div class="modal-info">
-                <p><strong>Год создания:</strong> 1985</p>
-                <p><strong>Создатель:</strong> Бьёрн Страуструп</p>
-                <p><strong>Описание:</strong> Системный язык программирования, расширяющий возможности C объектно-ориентированным программированием.</p>
-                <p><strong>Области применения:</strong> Системное программирование, игры, высоконагруженные приложения.</p>
-                <p><strong>Интересный факт:</strong> Название происходит от увеличения оператора ++ в C.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="csharp-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('csharp')">&times;</span>
-            <h2 class="modal-title">C#</h2>
-            <div class="modal-info">
-                <p><strong>Год создания:</strong> 2000</p>
-                <p><strong>Создатель:</strong> АНдерс Хейлсберг (Microsoft)</p>
-                <p><strong>Описание:</strong> Современный объектно-ориентированный язык программирования, разработанный для платформы .NET.</p>
-                <p><strong>Области применения:</strong> Веб-приложения, игры (Unity), настольные приложения, облачные сервисы.</p>
-                <p><strong>Интересный факт:</strong> Произносится как "си шарп", символ ♯ означает музыкальный аккорд.</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="go-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('go')">&times;</span>
-            <h2 class="modal-title">Go</h2>
-            <div class="modal-info">
-                <p><strong>Год создания:</strong> 2009</p>
-                <p><strong>Создатель:</strong> Google (Роб Пайк, Роберт Гризмер, Кен Томпсон)</p>
-                <p><strong>Описание:</strong> Компилируемый язык программирования, разработанный для современных многопроцессорных систем.</p>
-                <p><strong>Области применения:</strong> Веб-серверы, микросервисы, облачные вычисления.</p>
-                <p><strong>Интересный факт:</strong> Также известен как Golang, чтобы отличаться от других языков с именем Go.</p>
-            </div>
+        <div class="results-container" id="resultsContainer">
+            <h2 class="results-header">Результаты поиска</h2>
+            <div id="resultsList"></div>
         </div>
     </div>
 
     <script>
-        function showModal(language) {
-            document.getElementById(`${language}-modal`).style.display = 'block';
-            document.body.style.overflow = 'hidden';
+        async function searchMusic() {
+            const query = document.getElementById('searchInput').value.trim();
+            
+            if (!query) {
+                alert('Пожалуйста, введите название песни или исполнителя');
+                return;
+            }
+
+            // Показываем загрузку
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultsContainer').style.display = 'none';
+            document.getElementById('noResults').style.display = 'none';
+
+            try {
+                // Имитация API-запроса (в реальном проекте здесь будет настоящий API-запрос)
+                await new Promise(resolve => setTimeout(resolve, 1500));
+                
+                // Моковые данные для демонстрации
+                const mockResults = generateMockResults(query);
+                
+                if (mockResults.length > 0) {
+                    displayResults(mockResults);
+                } else {
+                    document.getElementById('noResults').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Ошибка поиска:', error);
+                document.getElementById('noResults').style.display = 'block';
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
         }
 
-        function closeModal(language) {
-            document.getElementById(`${language}-modal`).style.display = 'none';
-            document.body.style.overflow = 'auto';
+        function generateMockResults(query) {
+            // В реальном проекте здесь будет вызов API
+            // Например: YouTube Music, Spotify, SoundCloud
+            
+            const mockSongs = [
+                {
+                    title: "Blinding Lights",
+                    artist: "The Weeknd",
+                    sources: [
+                        { name: "YouTube", url: "https://music.youtube.com/search?q=blinding+lights+the+weeknd" },
+                        { name: "Spotify", url: "https://open.spotify.com/search/blinding%20lights%20the%20weeknd" },
+                        { name: "Apple Music", url: "https://music.apple.com/search?term=blinding+lights+the+weeknd" }
+                    ]
+                },
+                {
+                    title: "Shape of You",
+                    artist: "Ed Sheeran",
+                    sources: [
+                        { name: "YouTube", url: "https://music.youtube.com/search?q=shape+of+you+ed+sheeran" },
+                        { name: "Spotify", url: "https://open.spotify.com/search/shape%20of%20you%20ed%20sheeran" },
+                        { name: "Apple Music", url: "https://music.apple.com/search?term=shape+of+you+ed+sheeran" }
+                    ]
+                },
+                {
+                    title: "Dance Monkey",
+                    artist: "Tones and I",
+                    sources: [
+                        { name: "YouTube", url: "https://music.youtube.com/search?q=dance+monkey+tones+and+i" },
+                        { name: "Spotify", url: "https://open.spotify.com/search/dance%20monkey%20tones%20and%20i" },
+                        { name: "SoundCloud", url: "https://soundcloud.com/search?q=dance%20monkey%20tones%20and%20i" }
+                    ]
+                }
+            ];
+
+            // Фильтруем результаты по запросу пользователя
+            return mockSongs.filter(song => 
+                song.title.toLowerCase().includes(query.toLowerCase()) ||
+                song.artist.toLowerCase().includes(query.toLowerCase())
+            );
         }
 
-        // Закрытие модального окна при клике вне его области
-        window.onclick = function(event) {
-            const modals = document.querySelectorAll('.modal');
-            modals.forEach(modal => {
-                if (event.target === modal) {
-                    modal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
+        function displayResults(results) {
+            const resultsList = document.getElementById('resultsList');
+            resultsList.innerHTML = '';
+
+            results.forEach(song => {
+                const songElement = document.createElement('div');
+                songElement.className = 'song-item';
+                
+                songElement.innerHTML = `
+                    <div class="song-title">${song.title}</div>
+                    <div class="song-artist">исполнитель: ${song.artist}</div>
+                    <div class="sources-list">
+                        ${song.sources.map(source => 
+                            `<a href="${source.url}" target="_blank" class="source-link">${source.name}</a>`
+                        ).join('')}
+                    </div>
+                `;
+                
+                resultsList.appendChild(songElement);
+            });
+
+            document.getElementById('resultsContainer').style.display = 'block';
+        }
+
+        // Добавляем возможность поиска по нажатию Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchMusic();
+            }
+        });
+
+        // Пример использования реальных API (для справки):
+        /*
+        async function realSearchMusic(query) {
+            // Пример с YouTube Music API (требуется ключ API)
+            const response = await fetch(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(query)}&type=video&key=YOUR_API_KEY`);
+            
+            // Пример с Spotify API (требуется ключ API)
+            const spotifyResponse = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track`, {
+                headers: {
+                    'Authorization': 'Bearer YOUR_SPOTIFY_TOKEN'
                 }
             });
         }
-
-        // Закрытие модального окна по клавише Esc
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                const visibleModals = document.querySelectorAll('.modal[style*="block"]');
-                visibleModals.forEach(modal => {
-                    modal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                });
-            }
-        });
+        */
     </script>
 </body>
 </html>
